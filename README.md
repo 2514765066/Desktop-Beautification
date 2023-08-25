@@ -15,4 +15,4 @@
 3.音频跳动（这里我懒省事了，他就一直跳动毫无规律可言，不会跟随声音跳动，就是一个随机跳动）  
   可以显示/隐藏  
   可以固定/不固定  
-![Uploading image.png…]()
+![image](https://github.com/2514765066/Desktop-Beautification/blob/main/xiaoguo.jpg)
