@@ -1,3 +1,6 @@
+注意，首先要在src文件夹下新建一个lnk文件夹，这个lnk文件夹是dock栏上显示的内容，可以放一些快捷方式和文件夹  
+只能用于windows平台
+
 这是一个桌面美化的软件，基于electorn制作，目前只有三个模块  
 1.桌面时钟  
   可以显示/隐藏  
@@ -17,6 +20,9 @@
   可以固定/不固定  
 
 最下面是效果图
+  
+Note that first, you need to create a new lnk folder under the src folder. This lnk folder is the content displayed on the dock bar, and you can place some shortcuts and folders
+Can only be used on the Windows platform
   
 This is a desktop beautification software based on Electron and currently only has three modules
 1. Desktop clock  
