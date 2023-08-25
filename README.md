@@ -16,8 +16,9 @@
   可以显示/隐藏  
   可以固定/不固定  
 
-最下面是效果图  
-This is a desktop beautification software based on Electron and currently only has three modules  
+最下面是效果图
+  
+This is a desktop beautification software based on Electron and currently only has three modules
 1. Desktop clock  
 Can show/hide  
 Can be fixed/not fixed  
