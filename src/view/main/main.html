@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+		<link rel="stylesheet" href="../../assets/css/simple.css" />
+		<link rel="stylesheet" href="./main.css" />
+	</head>
+	<body>
+		<div id="app" class="wh-100">
+			<nav class="v-sb-c p-f">
+				<strong class="pl-2 c-t">控制面板</strong>
+				<div class="v-c-c" @click="Close">
+					<img src="../../assets/images/关闭.png" />
+				</div>
+			</nav>
+
+			<section class="wh-100 h-sb-n p-1r">
+				<!-- 桌面时钟 -->
+				<article class="h mb-1r">
+					<strong class="c-t v-c-c mb-1r">桌面时钟</strong>
+					<div class="v-sb-c">
+						<strong class="c-s">是否显示：</strong>
+						<span class="c-s">{{clock_status}}</span>
+						<button class="fs-14" @click="Clock_status_change">切换</button>
+					</div>
+					<div class="v-sb-c">
+						<strong class="c-s">是否固定：</strong>
+						<span class="c-s">{{clock_static}}</span>
+						<button class="fs-14" @click="Clock_static_change">切换</button>
+					</div>
+					<div class="v-sb-c">
+						<strong class="c-s">当前字体颜色：</strong>
+						<input type="text" class="f-1" v-model="clock_color" placeholder="支持rgba,16进制,英文单词" />
+					</div>
+					<div class="v-sb-c">
+						<strong class="c-s">当前字体大小：</strong>
+						<input type="text" class="f-1" v-model="clock_size" placeholder="只支持px" />
+					</div>
+					<div class="v-sb-c">
+						<strong class="c-s">当前背景：</strong>
+						<input type="text" class="f-1" v-model="clock_bg" placeholder="支持rgba,16进制,英文单词" />
+					</div>
+					<button class="fs-14 fw-b as-e mt-1" @click="Clock_save">保存</button>
+				</article>
+				<!-- 桌面任务栏 -->
+				<article class="h mb-1r">
+					<strong class="c-t v-c-c mb-1r">桌面任务栏</strong>
+					<div class="v-sb-c">
+						<strong class="c-s">是否显示：</strong>
+						<span class="c-s">{{taskbar_status}}</span>
+						<button class="fs-14" @click="Taskbar_status_change">切换</button>
+					</div>
+					<div class="v-sb-c">
+						<strong class="c-s">是否固定：</strong>
+						<span class="c-s">{{taskbar_static}}</span>
+						<button class="fs-14" @click="Taskbar_static_change">切换</button>
+					</div>
+					<div class="v-sb-c">
+						<strong class="c-s">当前背景：</strong>
+						<input type="text" class="f-1" placeholder="支持rgba,16进制,英文单词" v-model="taskbar_bg" />
+					</div>
+					<button @click="openDir" class="mb-2">打开任务栏文件夹</button>
+					<button @click="Center"  class="mb-2">点击水平居中(不需要点保存)</button>
+					<button class="fs-14 fw-b as-e mt-1" @click="Taskbar_save">保存</button>
+				</article>
+				<!-- 音频跳动 -->
+				<article class="h">
+					<strong class="c-t v-c-c mb-1r">音频跳动</strong>
+					<div class="v-sb-c">
+						<strong class="c-s">是否显示：</strong>
+						<span class="c-s">{{jump_status}}</span>
+						<button class="fs-14" @click="Jump_status_change">切换</button>
+					</div>
+					<div class="v-sb-c">
+						<strong class="c-s">是否固定：</strong>
+						<span class="c-s">{{jump_static}}</span>
+						<button class="fs-14" @click="Jump_static_change">切换</button>
+					</div>
+					<button class="fs-14 fw-b as-e mt-1" @click="Jump_save">保存</button>
+				</article>
+			</section>
+
+			<!-- 提示 -->
+			<transition name="fade">
+				<aside class="v-c-n p-f w-100" v-if="isShow">
+					<div class="fs-14">保存成功</div>
+				</aside>
+			</transition>
+		</div>
+	</body>
+	<script src="./vue.min.js"></script>
+	<script>
+		const { get, set } = require("../../mixin");
+		const { ipcRenderer, shell } = require("electron");
+		const path = require("path");
+		const vm = new Vue({
+			el: "#app",
+			data() {
+				return {
+					isShow: false,
+
+					clock_status: get("clock", "status"),
+					clock_static: get("clock", "static"),
+					clock_color: get("clock", "color"),
+					clock_size: get("clock", "size"),
+					clock_bg: get("clock", "bg"),
+
+					taskbar_status: get("taskbar", "status"),
+					taskbar_static: get("taskbar", "static"),
+					taskbar_bg: get("taskbar", "bg"),
+
+					jump_status: get("jump", "status"),
+					jump_static: get("jump", "static"),
+				};
+			},
+			methods: {
+				TipShow() {
+					this.isShow = true;
+					setTimeout(() => {
+						this.isShow = false;
+					}, 1000);
+				},
+				Close() {
+					ipcRenderer.send("close");
+				},
+				Clock_status_change() {
+					if (this.clock_status == "隐藏") {
+						this.clock_status = "显示";
+						return;
+					}
+					this.clock_status = "隐藏";
+				},
+				Clock_static_change() {
+					if (this.clock_static == "不固定") {
+						this.clock_static = "固定";
+						return;
+					}
+					this.clock_static = "不固定";
+				},
+				Clock_save() {
+					set("clock", "status", this.clock_status);
+					set("clock", "static", this.clock_static);
+					set("clock", "color", this.clock_color);
+					set("clock", "size", this.clock_size);
+					set("clock", "bg", this.clock_bg);
+
+					this.TipShow();
+				},
+				Taskbar_status_change() {
+					if (this.taskbar_status == "隐藏") {
+						this.taskbar_status = "显示";
+						return;
+					}
+					this.taskbar_status = "隐藏";
+				},
+				Taskbar_static_change() {
+					if (this.taskbar_static == "不固定") {
+						this.taskbar_static = "固定";
+						return;
+					}
+					this.taskbar_static = "不固定";
+				},
+				Center() {
+					ipcRenderer.send("render", "taskbar", "center");
+				},
+				Taskbar_save() {
+					set("taskbar", "status", this.taskbar_status);
+					set("taskbar", "static", this.taskbar_static);
+					set("taskbar", "bg", this.taskbar_bg);
+
+					this.TipShow();
+				},
+				Jump_status_change() {
+					if (this.jump_status == "隐藏") {
+						this.jump_status = "显示";
+						return;
+					}
+					this.jump_status = "隐藏";
+				},
+				Jump_static_change() {
+					if (this.jump_static == "不固定") {
+						this.jump_static = "固定";
+						return;
+					}
+					this.jump_static = "不固定";
+				},
+				Jump_save() {
+					set("jump", "status", this.jump_status);
+					set("jump", "static", this.jump_static);
+
+					this.TipShow();
+				},
+				openDir() {
+					shell.openPath(path.resolve("./lnk"));
+				},
+			},
+		});
+	</script>
+</html>
