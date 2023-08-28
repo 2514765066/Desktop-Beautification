@@ -92,7 +92,7 @@
 	</body>
 	<script src="./vue.min.js"></script>
 	<script>
-		const { get, set } = require("../../mixin");
+		const { get, set,$path } = require("../../mixin");
 		const { ipcRenderer, shell } = require("electron");
 		const path = require("path");
 		const vm = new Vue({
@@ -163,7 +163,8 @@
 					this.taskbar_static = "不固定";
 				},
 				Center() {
-					ipcRenderer.send("render", "taskbar", "center");
+					// ipcRenderer.send("render", "taskbar", "center");
+					ipcRenderer.send("center");
 				},
 				Taskbar_save() {
 					set("taskbar", "status", this.taskbar_status);
@@ -193,7 +194,7 @@
 					this.TipShow();
 				},
 				openDir() {
-					shell.openPath(path.resolve("./lnk"));
+					shell.openPath($path("/lnk"));
 				},
 			},
 		});

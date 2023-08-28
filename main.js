@@ -1,4 +1,4 @@
-const { app, Tray, ipcMain, Menu, screen } = require("electron");
+const { app, Tray, ipcMain, Menu } = require("electron");
 const useMain = require("./src/view/main");
 const useTaskbar = require("./src/view/taskbar");
 const useClock = require("./src/view/clock");
@@ -65,14 +65,6 @@ ipcMain.on("render", (e, id, attr, value) => {
 		value == "隐藏" ? taskbar.hide() : taskbar.show();
 	} else if (id == "taskbar" && attr == "static") {
 		value == "不固定" ? taskbar.setMovable(true) : taskbar.setMovable(false);
-	} else if (id == "taskbar" && attr == "center") {
-		//获取屏幕宽度
-		const { width } = screen.getPrimaryDisplay().workAreaSize;
-		taskbar.setPosition(Math.round((width - taskbar.getSize()[0]) / 2), taskbar.getPosition()[1]);
-		set("taskbar", "position", {
-			x: Math.round((width - taskbar.getSize()[0]) / 2),
-			y: taskbar.getPosition()[1],
-		});
 	} else if (id == "taskbar" && attr == "bg") {
 		const code = `document.querySelector("div").style.backgroundColor = '${value}'`;
 		taskbar.webContents.executeJavaScript(code);

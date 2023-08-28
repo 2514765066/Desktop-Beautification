@@ -1,1 +1,36 @@
-{"clock":{"id":"clock","status":"显示","static":"不固定","color":"#fff","bg":"","size":"100","position":{"x":250,"y":302}},"taskbar":{"id":"taskbar","x":645,"y":0,"status":"显示","static":"不固定","bg":"","position":{"x":332,"y":154}},"jump":{"id":"jump","status":"显示","static":"不固定","jump":"不跳动","position":{"x":584,"y":541}}}
+{
+      "clock": {
+            "id": "clock",
+            "status": "显示",
+            "static": "不固定",
+            "color": "#fff",
+            "bg": "transparent",
+            "size": "100",
+            "position": {
+                  "x": 162,
+                  "y": 100
+            }
+      },
+      "taskbar": {
+            "id": "taskbar",
+            "x": 645,
+            "y": 0,
+            "status": "显示",
+            "static": "不固定",
+            "bg": "",
+            "position": {
+                  "x": 811,
+                  "y": 939
+            }
+      },
+      "jump": {
+            "id": "jump",
+            "status": "显示",
+            "static": "不固定",
+            "jump": "不跳动",
+            "position": {
+                  "x": 768,
+                  "y": 858
+            }
+      }
+}
